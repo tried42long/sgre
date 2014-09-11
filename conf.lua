@@ -8,7 +8,7 @@ function love.conf(t)
 
   -- DEFAULTS FROM HERE DOWN
   t.version = "0.9.0"         -- The LÖVE version this game was made for (string)
-  t.console = true           -- Attach a console (boolean, Windows only)
+  t.console = false           -- Attach a console (boolean, Windows only)
   t.release = false           -- Enable release mode (boolean)
   (t.window or t.screen).fullscreen = false -- Enable fullscreen (boolean)
   (t.window or t.screen).vsync = true       -- Enable vertical sync (boolean)
