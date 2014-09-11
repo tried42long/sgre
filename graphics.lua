@@ -210,7 +210,7 @@ end
 function draw_border_hover(x,y,w,h)
 --secondary border layout for menus and hovers
 --called by: draw_hover_frame()
---TODO: work out the numbers so that they seem less arbitary 
+--tried4's TODO: work out the numbers so that they seem less arbitary 
   love.graphics.setColor(255, 255, 255)
   local cx, cy = 3+4,2+4
   local c, cw, ch = load_asset("border-1.png")
@@ -536,36 +536,52 @@ function faction_button(faction, x, y)
   return button
 end
 
---[[ replace text buttons with image buttons; underdevelopment 
-function menu_fight_button(x, y)
+ --replace text buttons with image buttons 
+ --called by: mainloop.lua
+ 
+function make_menubar(x,y) 
 	local button = loveframes.Create("imagebutton")
 	button:SetX(x)
 	button:SetY(y)
 	button:SetState("lobby")
 	button.Draw = function(self)
 		love.graphics.setColor(255, 255, 255, 255)
-		love.graphics.draw(load_asset("fight.png"), x-1-1, y-1)
+		love.graphics.draw(load_asset("menubar.png"), x-1-1, y-1)
 	end
-	button.OnClick = function()
-      net_send({type="join_fight"})
-    end
-	
-	return button
-end
-
+	return button 	
+end 
+ 
 function menu_dungeon_button(x, y)
 	local button = loveframes.Create("imagebutton")
 	button:SetX(x)
 	button:SetY(y)
 	button:SetState("lobby")
 	button.Draw = function(self)
-		love.graphics.setColor(255, 255, 255, 255)
 		love.graphics.draw(load_asset("dungeon.png"), x-1, y-1)
 	end
-    button.OnClick = function()
-      from_lobby = {main_dungeon}
-    end
-	
+	return button
+end 
+ 
+function menu_fight_button(x, y)
+	local button = loveframes.Create("imagebutton")
+	button:SetX(x)
+	button:SetY(y)
+	button:SetState("lobby")
+	button.Draw = function(self)
+		--love.graphics.setColor(255, 255, 255, 255)
+		love.graphics.draw(load_asset("fight.png"), x-1-1, y-1)
+	end	
+	return button
+end
+
+function menu_cafe_button(x, y)
+	local button = loveframes.Create("imagebutton")
+	button:SetX(x)
+	button:SetY(y)
+	button:SetState("lobby")
+	button.Draw = function(self)
+		love.graphics.draw(load_asset("cafe.png"), x-1, y-1)
+	end
 	return button
 end
 
@@ -575,15 +591,32 @@ function menu_deck_button(x, y)
 	button:SetY(y)
 	button:SetState("lobby")
 	button.Draw = function(self)
-		love.graphics.setColor(255, 255, 255, 255)
 		love.graphics.draw(load_asset("deck.png"), x-1, y-1)
 	end
-    button.OnClick = function()
-      from_lobby = {main_decks}
-    end
-	
 	return button
-end]]
+end
+
+function menu_craft_button(x, y)
+	local button = loveframes.Create("imagebutton")
+	button:SetX(x)
+	button:SetY(y)
+	button:SetState("lobby")
+	button.Draw = function(self)
+		love.graphics.draw(load_asset("lab.png"), x-1, y-1)
+	end
+	return button
+end
+
+function menu_xmute_button(x, y)
+	local button = loveframes.Create("imagebutton")
+	button:SetX(x)
+	button:SetY(y)
+	button:SetState("lobby")
+	button.Draw = function(self)
+		love.graphics.draw(load_asset("xmute.png"), x-1, y-1)
+	end
+	return button
+end
 
 local function modal_choice(prompt, lt, rt, lcb, rcb)
   prompt = prompt or "Is this prompt dumb?"
