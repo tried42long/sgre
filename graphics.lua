@@ -618,6 +618,32 @@ function menu_xmute_button(x, y)
 	return button
 end
 
+ -- Player Info Panel
+ -- Lobby only
+ 
+function make_player_info(frame)
+	--tried4's TODO: don't hardcode frame position and size
+	--tried4's TODO: is this function called in a loop? Is this normal?
+	local player_panel = loveframes.Create("frame",frame)
+    local x,y,w,h = left_hover_frame_pos()
+    player_panel:SetPos(764-w,-10)
+    player_panel:SetSize(w,h)
+    player_panel:ShowCloseButton(false)
+    player_panel:SetDraggable(false)
+    player_panel.Draw = function(self)
+	  --print("This function is loop!! Why is it looping!?")
+      draw_hover_frame(self.x, self.y, self.width, self.height)
+	  love.graphics.draw(load_asset("bg-ornament.png"),764-w+25,-10+20)
+	  love.graphics.draw(load_asset("logo.png"),764-w+22,-10+20,0,.85)
+	  local id = get_active_char()
+	  IMG_card = {}
+	  IMG_card[id], IMG_gray_card[id] = load_img(id.."L.jpg")
+	  love.graphics.draw(IMG_card[id], 800-w, 100, 0, .5, .5)
+    end
+	
+end
+ 
+
 local function modal_choice(prompt, lt, rt, lcb, rcb)
   prompt = prompt or "Is this prompt dumb?"
   lt = lt or "Yes"

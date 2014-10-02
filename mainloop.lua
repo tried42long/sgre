@@ -545,7 +545,7 @@ function main_lobby()
     frames.lobby = {}
     local frame, text, textinput
 	
-	local chatWidth = 670
+	local chatWidth = 470
 	local chatHeight = 560
 	
     frame = loveframes.Create("frame")
@@ -554,7 +554,6 @@ function main_lobby()
 	frame:SetPos(20,20)
     frame:ShowCloseButton(false)
     frame:SetDraggable(false)
-    --frame:Center()
     frame:SetState("lobby")
     
     text = loveframes.Create("textinput", frame)
@@ -578,12 +577,13 @@ function main_lobby()
       net_send({type="general_chat",text=text})
     end
 
-	
+	make_player_info(frame)
+
 	-- === Create Menubar and Lobby Buttons === --
 	
     frames.lobby.game_buttons = {}
-	
-	local menuX = 697
+	--tried4's TODO: don't hardcode frame position and size
+	local menuX = 497
 	local menuY = 0
 	local offsetX = 13
 	local offsetY = 105
@@ -601,6 +601,7 @@ function main_lobby()
 	local button = menu_fight_button(menuX+offsetX,menuY+offsetY+spacing)	
 	button.OnClick = function()
 		net_send({type="join_fight"})
+		net_send({type="general_chat",text="I am looking for a fight!"})
     end
     table.insert(frames.lobby.game_buttons, button)
 --[[
@@ -664,6 +665,8 @@ function main_lobby()
     end
     table.insert(frames.lobby.game_buttons, button)
 ]]
+
+	-- == Lobby Buttons, continued == --
 	local button = menu_cafe_button(menuX+offsetX-3,menuY+offsetY+spacing*2)	
     button.OnClick = function()
       if frames.cafe then
@@ -696,7 +699,6 @@ function main_lobby()
       from_lobby = {main_xmute}
     end
     table.insert(frames.lobby.game_buttons, button)
-
   end
   
   local enable_buttons = check_active_deck()
