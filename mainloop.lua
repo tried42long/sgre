@@ -601,7 +601,7 @@ function main_lobby()
 	local button = menu_fight_button(menuX+offsetX,menuY+offsetY+spacing)	
 	button.OnClick = function()
 		net_send({type="join_fight"})
-		net_send({type="general_chat",text="I am looking for a fight!"})
+		net_send({type="general_chat",text="[ Public Msg ] " .. user_data.username .. " is looking for a fite!"})
     end
     table.insert(frames.lobby.game_buttons, button)
 --[[
