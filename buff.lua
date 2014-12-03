@@ -40,6 +40,7 @@ OneBuff = class(function(self, player, idx, buff)
     self.idx = idx
     self.buff = buff
     if GO_HARD then
+      assert(buff)
       BUFF_COUNTER = (BUFF_COUNTER or 0) + 1
     end
   end)
@@ -63,9 +64,9 @@ function Impact:apply()
   local gb = GlobalBuff(self.player)
   for p,slots in pairs(self) do
     if p ~= "player" then
-      gb.field[k] = {}
+      gb.field[p] = {}
       for slot,_ in pairs(slots) do
-        gb.field[k][slot] = {}
+        gb.field[p][slot] = {}
       end
     end
   end

@@ -456,6 +456,7 @@ function rewards(data)
   -- make outer frame
   local frame = loveframes.Create("frame")
   frame:SetState("playing")
+  play_bgm("rewards")
   frame:SetName("Rewards!")
   frame:SetSize(500, 300)
   frame:ShowCloseButton(false)
@@ -590,7 +591,7 @@ function main_lobby()
 	local spacing = 57
 
 	local button = make_menubar(menuX,menuY)
-	table.insert(frames.lobby.game_buttons, button)
+--	table.insert(frames.lobby.game_buttons, button)
 	
 	local button = menu_dungeon_button(menuX+offsetX,menuY+offsetY)	
 	button.OnClick = function()
@@ -666,6 +667,16 @@ function main_lobby()
     table.insert(frames.lobby.game_buttons, button)
 ]]
 
+    local button = loveframes.Create("button")
+    button:SetPos(menuX, 530)
+    button:SetSize(92, 50)
+    button:SetText("OPTIONS")
+    button:SetState("lobby")
+    button.OnClick = function()
+      from_lobby = {main_options}
+    end
+--    table.insert(frames.lobby.game_buttons, button)
+
 	-- == Lobby Buttons, continued == --
 	local button = menu_cafe_button(menuX+offsetX-3,menuY+offsetY+spacing*2)	
     button.OnClick = function()
@@ -676,19 +687,19 @@ function main_lobby()
       end
       from_lobby = {main_cafe}
     end
-    table.insert(frames.lobby.game_buttons, button)
+--    table.insert(frames.lobby.game_buttons, button)
 	
 	local button = menu_deck_button(menuX+offsetX-2,menuY+offsetY+spacing*3-5)	
     button.OnClick = function()
       from_lobby = {main_decks}
     end
-	table.insert(frames.lobby.game_buttons, button)
+--	table.insert(frames.lobby.game_buttons, button)
 	
 	local button = menu_craft_button(menuX+offsetX-2,menuY+offsetY+spacing*4-10)	
     button.OnClick = function()
       from_lobby = {main_craft}
     end
-    table.insert(frames.lobby.game_buttons, button)
+--    table.insert(frames.lobby.game_buttons, button)
 	
 	local button = menu_xmute_button(menuX+offsetX-2,menuY+offsetY+spacing*5-15)	
     button.OnClick = function()
@@ -698,7 +709,7 @@ function main_lobby()
 		end
       from_lobby = {main_xmute}
     end
-    table.insert(frames.lobby.game_buttons, button)
+--    table.insert(frames.lobby.game_buttons, button)
   end
   
   local enable_buttons = check_active_deck()
@@ -707,7 +718,7 @@ function main_lobby()
   end
 
   loveframes.SetState("lobby")
-  
+  play_bgm("lobby")
   -- goes back to dungeon select screen after a dungeon battle
   if gobacktodungeon then
     gobacktodungeon = false
@@ -1082,6 +1093,7 @@ function main_craft()
   
 
   loveframes.SetState("craft")
+  play_bgm("other_main")
   reset_filters("craft")
   while true do
     wait()
@@ -1580,6 +1592,7 @@ function main_cafe()
   end
 
   loveframes.SetState("cafe")
+  play_bgm("other_main")
   while true do
     wait()
     if from_cafe then
@@ -1590,6 +1603,60 @@ function main_cafe()
   end
 end
 
+local from_options = nil
+function main_options()
+  if not frames.options then
+    frames.options = {}
+
+    local lobby_button = loveframes.Create("button")
+    frames.options.lobby_button = lobby_button
+    lobby_button:SetState("options")
+    lobby_button:SetY(515)
+    lobby_button:SetX(605)
+    lobby_button:SetWidth(174)
+    lobby_button:SetText("Lobby")
+    lobby_button:SetHeight(70)
+    function lobby_button:OnClick()
+      from_options = {main_lobby}
+    end
+
+    local options_pane = loveframes.Create("frame")
+    frames.options.options_pane = options_pane
+    options_pane:SetName("Let's adjust the SG~~")
+    options_pane:SetState("options")
+    options_pane:SetPos(50, 50)
+    options_pane:SetSize(700, 460)
+    options_pane:ShowCloseButton(false)
+    options_pane:SetDraggable(false)
+
+    local music_volume_text = loveframes.Create("text", options_pane)
+    music_volume_text:SetText("Music Volume: "..tostring(options.music_volume))
+    music_volume_text:SetPos(10, 30)
+
+    local music_volume_slider = loveframes.Create("slider", options_pane)
+    music_volume_slider:SetPos(10, 50)
+    music_volume_slider:SetWidth(200)
+    music_volume_slider:SetMinMax(0.0, 1.0)
+    music_volume_slider:SetDecimals(2)
+    music_volume_slider:SetValue(options.music_volume)
+    music_volume_slider.OnValueChanged = function(object)
+      options.music_volume = object:GetValue()
+      music_volume_text:SetText("Music Volume: "..tostring(options.music_volume))
+      bgm:setVolume(options.music_volume)
+      set_file("options.json", json.encode(options))
+    end
+
+  end
+  loveframes.SetState("options")
+  while true do
+    wait()
+    if from_options then
+      local ret = from_options
+      from_options = nil
+      return unpack(ret)
+    end
+  end
+end
 
 local from_xmute = nil
 function main_xmute()
@@ -1831,6 +1898,7 @@ function main_xmute()
   end
 
   loveframes.SetState("xmute")
+  play_bgm("other_main")
   while true do
     wait()
     if from_xmute then
@@ -1916,6 +1984,7 @@ end
 local from_fight = nil
 function main_fight(msg)
   loveframes.SetState("playing")
+  play_bgm("fight")
   game = Game(nil, nil, true, get_active_char())
   game.opponent_name = msg.opponent_name
   game.game_type = msg.game_type
@@ -1931,12 +2000,11 @@ function main_fight(msg)
   return main_lobby
 end
 
-local easy_dungeons = {{"Beginner Dungeon", 1}, {"Intermediate Dungeon", 2}, {"Advanced Dungeon", 3}, {"Bamboo Garden", 8}, {"Dream Island", 14},}
-local normal_dungeons = {{"Frontier Ruins", 4}, {"Witch's Tower", 5}, {"Crux Training Camp", 7}, {"Linia's Mansion", 9}, {"Vampire Lands", 10}, {"Vita Public School", 12}, {"Vivid World", 13}, {"Catacombs", 16},}
+local easy_dungeons = {{"Beginner Dungeon", 1}, {"Intermediate Dungeon", 2}, {"Advanced Dungeon", 3}, {"Bamboo Garden", 8}, {"Dream Island", 14}, {"2S Detective Agency", 18}}
+local normal_dungeons = {{"Frontier Ruins", 4}, {"Witch's Tower", 5}, {"Crux Training Camp", 7}, {"Linia's Mansion", 9}, {"Vampire Lands", 10}, {"Vita Public School", 12}, {"Vivid World", 13}, {"Catacombs", 16}, {"Ancient Sanctuary", 17},}
 local hard_dungeons = {{"Shadowland", 6}, {"Goddess Tower", 11}}
 
 function main_dungeon()
-  
   if not frames.dungeon then
     frames.dungeon = {}
   end
@@ -1965,7 +2033,7 @@ function main_dungeon()
   frame:Center()
   frame:SetModal(true)
   loveframes.modalobject.modalbackground:SetState("lobby")
-  
+  play_bgm("dungeon")
 
   local prevbutton = loveframes.Create("button", frame)
   prevbutton:SetPos(10, 400)
@@ -2124,5 +2192,4 @@ function main_dungeon()
     end
   end
 end
-
 

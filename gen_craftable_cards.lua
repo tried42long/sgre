@@ -47,6 +47,8 @@ local dungeon_mats = {
   210019, -- good job stamp
   210020, -- spiral fragment
   210029, -- aletheian brick
+  210033, -- pass
+  210034, -- receipt (ep9)
 }
 local materials = {s1_fight, s2_fight, ore, dungeon_mats}
 local reachable_cards = {}
@@ -82,9 +84,13 @@ table.sort(ret)
 --print(json.encode(ret))
 -- jk lol
 
-recipes = fix_num_keys(json.decode(file_contents("recipes.json")))
 local ret = {}
+recipes = fix_num_keys(json.decode(file_contents("recipes.json")))
 for k,v in pairs(reachable_cards) do
+  ret[k] = recipes[k]
+end
+recipes = fix_num_keys(json.decode(file_contents("recipes_manual.json")))
+for k,v in pairs(recipes) do
   ret[k] = recipes[k]
 end
 print(json.encode(ret))

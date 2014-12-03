@@ -175,7 +175,7 @@ function Player:upkeep_phase()
             skill_func[skill_id](self, idx, card, skill_idx)
           end
           if BUFF_COUNTER and BUFF_COUNTER ~= 0 then
-            error("oh no")
+            error("unresolved buff in skill " .. skill_id)
           end
           self.game:snapshot(nil, nil, true)
           self:check_hand()
@@ -697,8 +697,8 @@ function Player:follower_combat_round(idx, target_idx)
       local attacker = attack_player.field[attack_idx]
       local defender = defend_player.field[defend_idx]
 
-      if defender.type == "follower" then
-        for skill_idx=1,3 do
+      for skill_idx=1,3 do
+        if attacker and defender and defender.type == "follower" then
           local skill_id = attacker.skills[skill_idx]
           if attack_player.field[attack_idx] == attacker and
               skill_id and skill_id_to_type[skill_id] == "attack" then
@@ -729,6 +729,8 @@ function Player:follower_combat_round(idx, target_idx)
             self.game:clean_dead_followers()
             self.game:snapshot()
           end
+          attacker = attack_player.field[attack_idx]
+          defender = defend_player.field[defend_idx]
         end
       end
       self.game:clean_dead_followers()
@@ -738,8 +740,8 @@ function Player:follower_combat_round(idx, target_idx)
         return
       end
 
-      if defender.type == "follower" then
-        for skill_idx=1,3 do
+      for skill_idx=1,3 do
+        if attacker and defender and defender.type == "follower" then
           local skill_id = defender.skills[skill_idx]
           if defend_player.field[defend_idx] == defender and
               skill_id and skill_id_to_type[skill_id] == "defend" then
@@ -759,7 +761,7 @@ function Player:follower_combat_round(idx, target_idx)
             skill_func[skill_id](defend_player, defend_idx, defender, skill_idx,
                 attack_idx, other_card)
             if BUFF_COUNTER and BUFF_COUNTER ~= 0 then
-              error("oh no")
+              error("unresolved buff found in skill " .. skill_id)
             end
             if flicker_follower then
               attack_player.field[attack_idx] = flicker_follower
@@ -770,6 +772,8 @@ function Player:follower_combat_round(idx, target_idx)
             self.game:clean_dead_followers()
             self.game:snapshot()
           end
+          attacker = attack_player.field[attack_idx]
+          defender = defend_player.field[defend_idx]
         end
       end
       self.game:clean_dead_followers()
