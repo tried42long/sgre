@@ -557,10 +557,7 @@ function menu_dungeon_button(x, y)
 	button:SetY(y)
 	button:SetState("lobby")
 	button.Draw = function(self)
-<<<<<<< HEAD
-=======
-    love.graphics.setColor(255, 255, 255)
->>>>>>> upstream/master
+		love.graphics.setColor(255, 255, 255)
 		love.graphics.draw(load_asset("dungeon.png"), x-1, y-1)
 	end
 	return button
@@ -572,10 +569,7 @@ function menu_fight_button(x, y)
 	button:SetY(y)
 	button:SetState("lobby")
 	button.Draw = function(self)
-<<<<<<< HEAD
-=======
-    love.graphics.setColor(255, 255, 255)
->>>>>>> upstream/master
+		love.graphics.setColor(255, 255, 255)
 		love.graphics.draw(load_asset("fight.png"), x-1-1, y-1)
 	end	
 	return button
@@ -587,10 +581,7 @@ function menu_cafe_button(x, y)
 	button:SetY(y)
 	button:SetState("lobby")
 	button.Draw = function(self)
-<<<<<<< HEAD
-=======
-    love.graphics.setColor(255, 255, 255)
->>>>>>> upstream/master
+		love.graphics.setColor(255, 255, 255)
 		love.graphics.draw(load_asset("cafe.png"), x-1, y-1)
 	end
 	return button
@@ -602,10 +593,7 @@ function menu_deck_button(x, y)
 	button:SetY(y)
 	button:SetState("lobby")
 	button.Draw = function(self)
-<<<<<<< HEAD
-=======
-    love.graphics.setColor(255, 255, 255)
->>>>>>> upstream/master
+		love.graphics.setColor(255, 255, 255)
 		love.graphics.draw(load_asset("deck.png"), x-1, y-1)
 	end
 	return button
@@ -617,10 +605,7 @@ function menu_craft_button(x, y)
 	button:SetY(y)
 	button:SetState("lobby")
 	button.Draw = function(self)
-<<<<<<< HEAD
-=======
-    love.graphics.setColor(255, 255, 255)
->>>>>>> upstream/master
+		love.graphics.setColor(255, 255, 255)
 		love.graphics.draw(load_asset("lab.png"), x-1, y-1)
 	end
 	return button
@@ -632,10 +617,7 @@ function menu_xmute_button(x, y)
 	button:SetY(y)
 	button:SetState("lobby")
 	button.Draw = function(self)
-<<<<<<< HEAD
-=======
-    love.graphics.setColor(255, 255, 255)
->>>>>>> upstream/master
+		love.graphics.setColor(255, 255, 255)
 		love.graphics.draw(load_asset("xmute.png"), x-1, y-1)
 	end
 	return button
@@ -654,24 +636,6 @@ function make_player_info(frame)
     player_panel:SetDraggable(false)
     player_panel.Draw = function(self)
       draw_hover_frame(self.x, self.y, self.width, self.height)
-<<<<<<< HEAD
-	  love.graphics.draw(load_asset("bg-ornament.png"),764-w+25,-10+20)
-	  love.graphics.draw(load_asset("logo.png"),764-w+22,-10+20,0,.85)	  
-	  local id = get_active_char()
-	  if not IMG_card[id] then
-		IMG_card[id], IMG_gray_card[id] = load_img(id.."L.jpg")
-	  end
-	  love.graphics.draw(IMG_card[id], 800-w, 80, 0, .5, .5)
-	  love.graphics.draw(load_asset("m-character.png"), 800-w, 80)
-	  love.graphics.draw(load_asset("nick_name.png"),788-w, 330)
-	  love.graphics.setColor(144, 103, 55, 255)
-	  love.graphics.printf(user_data.username, 800-w*2/3, 340, 38, "center")
-	  love.graphics.setFont(load_font("sg_assets/fonts/lifewan.png"))
-	  love.graphics.setColor(255, 255, 255, 255)
-	  local card = Card(id)
-      love.graphics.printf(math.max(card.life, 0), 800-w/2+20, h/2, 50, "center")
-	  draw_faction(card.faction, 800-w, 80, 0, 1, 1)  
-=======
 	  love.graphics.draw(load_asset("bg-ornament.png"),764-w+26,-10+20)
 	  love.graphics.draw(load_asset("logo.png"),764-w+22,-10+20,0,.85)	  
 	  local id = get_active_char() or 100089
@@ -688,7 +652,6 @@ function make_player_info(frame)
 	  local card = Card(id)
       love.graphics.printf(math.max(card.life, 0), 800-w/2+16, h/2, 50, "center")
 	  draw_faction(card.faction, 800-w-4, 80, 0, 1, 1)  
->>>>>>> upstream/master
     end
 end
  
